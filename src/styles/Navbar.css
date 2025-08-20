@@ -1,0 +1,30 @@
+/* styles/Navbar.css */
+.navbar {
+    background-color: #2563eb; /* modrá barva */
+    color: white;
+    padding: 1rem;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.navbar-logo {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.navbar-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 1rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.navbar-links a:hover {
+    color: #93c5fd; /* světle modrá při hover */
+}

@@ -1,0 +1,29 @@
+.home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.home-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.home-cards {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.home-card {
+    cursor: pointer;
+    flex: 1;
+    max-width: 400px;
+    transition: transform 0.2s;
+}
+
+.home-card:hover {
+    transform: translateY(-5px);
+}

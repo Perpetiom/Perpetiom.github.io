@@ -1,0 +1,28 @@
+.offer-card {
+    background-color: #f3f4f6; /* světle šedá */
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.offer-card:hover {
+    transform: translateY(-3px);
+}
+
+.offer-card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.offer-card-description {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #4b5563; /* tmavě šedá */
+}
+
+.offer-card-price {
+    font-weight: bold;
+    color: #2563eb; /* modrá */
+}

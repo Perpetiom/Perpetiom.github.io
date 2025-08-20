@@ -1,0 +1,25 @@
+.create-offer-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.create-offer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.create-offer-form button {
+    padding: 0.5rem 1rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.create-offer-form button:hover {
+    background-color: #1e40af;
+}
