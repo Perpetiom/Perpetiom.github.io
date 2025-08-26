@@ -8,6 +8,7 @@
 
 .offer-card:hover {
     transform: translateY(-3px);
+    color: inherit;
 }
 
 .offer-card-title {
@@ -19,10 +20,15 @@
 .offer-card-description {
     font-size: 1rem;
     margin-bottom: 0.5rem;
-    color: #4b5563; /* tmavě šedá */
+    color: #4b5563;
 }
 
 .offer-card-price {
     font-weight: bold;
-    color: #2563eb; /* modrá */
+    color: #007bff;
+}
+.offer-card-tags {
+    font-size: 0.75rem;
+    font-weight: lighter;
+    color: #4b5563;
 }

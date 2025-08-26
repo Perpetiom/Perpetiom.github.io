@@ -1,17 +1,23 @@
 import Link from 'next/link';
 import '../styles/Navbar.css'
+import Image from "next/image";
 
 export default function Navbar() {
     return (
         <nav className="navbar">
             <div className="navbar-container">
+                <Link href="/">
+                    <Image
+                        src="/assets/images/perpetiom-logo.png"
+                        alt="logo"
+                        width={256}
+                        height={256}
+                    />
+                </Link>
                 {/* Navigační odkazy */}
                 <div className="navbar-links">
-                    <Link href="/">Hlavní stránka</Link>
-                    <Link href="/login">Přihlášení</Link>
                     <Link href="/register">Registrace</Link>
-                    <Link href="/createOffer">Vytvořit nabídku</Link>
-                    <Link href="/offers">Nabídky</Link>
+
                 </div>
             </div>
         </nav>

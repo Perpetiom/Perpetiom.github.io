@@ -12,13 +12,17 @@
 
 .home-cards {
     display: flex;
-    gap: 2rem;
     justify-content: center;
     text-decoration: none;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
 .home-card {
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
     flex: 1;
     max-width: 400px;
     transition: transform 0.2s;
@@ -26,4 +30,14 @@
 
 .home-card:hover {
     transform: translateY(-5px);
+}
+
+.home-card:visited {
+    color: inherit;
+}
+
+.vip{
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
 }
