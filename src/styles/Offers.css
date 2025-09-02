@@ -1,12 +1,45 @@
+.offers-page-container {
+    padding: 2rem;
+}
+
+.offers-search-input {
+    padding: 0.75rem;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
 .offers-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.offers-tags button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.offers-tags button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.offers-tags button:hover {
+    background-color: #f0f0f0;
 }
 
 .offers {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    flex-direction: column;
 }

@@ -10,12 +10,13 @@ export default function Navbar() {
                     <Image
                         src="/assets/images/perpetiom-logo.png"
                         alt="logo"
-                        width={256}
-                        height={256}
+                        width={64}
+                        height={64}
                     />
                 </Link>
                 {/* Navigační odkazy */}
                 <div className="navbar-links">
+                    <Link href="/login">Přihlásit se</Link>
                     <Link href="/register">Registrace</Link>
 
                 </div>

@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import {useState, useMemo, useEffect} from 'react';
 import { MOCK_DATA } from '@/data/offers';
 import { ALL_TAGS } from '@/data/tags';
+import '../../styles/Offers.css';
 
 export default function OffersPage() {
     const searchParams = useSearchParams();
@@ -49,14 +50,14 @@ export default function OffersPage() {
     return (
         <>
             <Navbar />
-            <div style={{ padding: '2rem' }}>
+            <div className="offers-page-container">
                 {/* Vstup pro vyhledávání */}
                 <input
                     type="text"
                     placeholder="Hledat nabídky..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{ marginBottom: '1rem', width: '100%', padding: '0.5rem' }}
+                    className="offers-search-input"
                 />
 
                 {/* Tlačítka s tagy */}
@@ -65,14 +66,7 @@ export default function OffersPage() {
                         <button
                             key={tag}
                             onClick={() => handleTagClick(tag)}
-                            style={{
-                                padding: '0.5rem 1rem',
-                                border: '1px solid #ccc',
-                                borderRadius: '20px',
-                                backgroundColor: activeTags.includes(tag) ? '#007bff' : 'white',
-                                color: activeTags.includes(tag) ? 'white' : 'black',
-                                cursor: 'pointer'
-                            }}
+                            className={activeTags.includes(tag) ? 'active' : ''}
                         >
                             {tag}
                         </button>

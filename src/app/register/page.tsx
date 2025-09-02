@@ -3,60 +3,86 @@
 import Navbar from "@/components/Navbar";
 import FormInput from "@/components/FormInput";
 import {useState} from "react";
+import { handleFormChange, handleFormSubmit } from "../helpers/formHelpers";
 
 export default function RegisterPage() {
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [name, setName] = useState('');
-    const [surname, setSurname] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [registerData, setRegisterData] = useState({
+        email: "",
+        phoneNumber: "",
+        name: "",
+        surname: "",
+        password: "",
+        passwordConfirmation: "",
+        ico: ""
+    });
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log({email, phoneNumber, name, surname});
-        // tady později zavoláme API nebo uložíme do stavu
+        handleFormSubmit(e, registerData);
     };
+
+
     return (
         <>
             <Navbar/>
             <div className="create-offer-container">
-                <h1>Vytvořit novou nabídku</h1>
+                <h1>Registrovat se</h1>
                 <form onSubmit={handleSubmit} className="create-offer-form">
                     <FormInput
                         label="Jméno:"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        name="name"
+                        placeholder="Jan"
+                        value={registerData.name}
+                        onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
                         label="Příjmení:"
-                        value={surname}
-                        onChange={(e) => setSurname(e.target.value)}
+                        name="surname"
+                        placeholder="Novák"
+                        value={registerData.surname}
+                        onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
-                        label="Email:"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        label="IČO:"
+                        name="ico"
+                        placeholder="12345678"
+                        value={registerData.ico}
+                        onChange={(e) => handleFormChange(e, setRegisterData)}
+                    />
+                    <FormInput
+                        label="E-mail:"
+                        name="email"
+                        type="email"
+                        placeholder="jan.novak@email.cz"
+                        value={registerData.email}
+                        onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
                         label="Telefon:"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        name="phoneNumber"
+                        type="tel"
+                        placeholder="+420123456789"
+                        value={registerData.phoneNumber}
+                        onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
                         label="Heslo:"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
+                        type="password"
+                        placeholder="heslo"
+                        value={registerData.password}
+                        onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
                         label="Heslo znovu:"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        name="passwordConfirmation"
+                        type="password"
+                        placeholder="heslo"
+                        value={registerData.passwordConfirmation}
+                        onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <button type="submit">Zaregistrovat se</button>
                 </form>
             </div>
         </>
-
     );
 }

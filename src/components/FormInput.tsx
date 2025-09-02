@@ -4,12 +4,13 @@ import '../styles/FormInput.css';
 interface FormInputProps {
     label: string;
     type?: string;
-    placeholder?: string;
+    name: string;
+    placeholder: string;
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function FormInput({ label, type = 'text', placeholder, value, onChange }: FormInputProps) {
+export default function FormInput({ label, type = 'text', placeholder, value, onChange, name }: FormInputProps) {
     return (
         <div className="form-input">
             <label className="form-input-label">{label}</label>
@@ -19,6 +20,7 @@ export default function FormInput({ label, type = 'text', placeholder, value, on
                 value={value}
                 onChange={onChange}
                 className="form-input-field"
+                name={name}
             />
         </div>
     );
