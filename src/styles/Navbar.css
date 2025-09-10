@@ -1,30 +1,89 @@
-/* styles/Navbar.css */
+/* Přidáme styly pro navbar-container, logo-link, user-info a navbar-links */
+
 .navbar {
-    background-color: #2563eb; /* modrá barva */
-    color: white;
-    padding: 1rem;
+    display: flex;
+    justify-content: space-between; /* Rozloží obsah na okraje */
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #007bff; /* Tmavé pozadí */
+    color: white; /* Bílá barva textu */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Jemný stín pro vizuální oddělení */
 }
 
 .navbar-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%; /* Zajistí, že kontejner zabere celou šířku */
+    justify-content: space-between; /* Dává prostor mezi logem a obsahem */
 }
 
-.navbar-logo {
-    font-size: 1.25rem;
+/* Styly pro logo */
+.logo-link {
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Mezera mezi obrázkem a textem loga */
+}
+
+.logo-link p { /* Styly pro text 'logo' */
+    margin: 0;
+}
+
+/* Kontejner pro obsah navigace (odkazy a info o uživateli) */
+.nav-content {
+    display: flex;
+    align-items: center;
+}
+
+/* Styly pro odkazy (přihlásit se, registrace) */
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Mezera mezi odkazy */
 }
 
 .navbar-links a {
-    color: white;
-    text-decoration: none;
-    margin-left: 1rem;
-    transition: color 0.2s ease-in-out;
+    color: white; /* Bílá barva textu pro odkazy */
+    text-decoration: none; /* Odstraní podtržení */
+    font-weight: bold;
+    transition: color 0.3s ease; /* Plynulý přechod barvy při najetí myši */
 }
 
 .navbar-links a:hover {
-    color: #93c5fd; /* světle modrá při hover */
+    color: black; /* Změna barvy při najetí myší (modrá) */
+}
+
+/* Styly pro informace o uživateli a tlačítko odhlásit se */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Mezera mezi textem a tlačítkem */
+}
+
+.user-info span {
+    font-weight: bold;
+    color: white; /* Bílá barva textu */
+}
+
+.logout-button {
+    background-color: #dc3545; /* Červená barva pro tlačítko odhlásit se */
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #c82333; /* Tmavší červená při najetí myší */
+}
+
+/* Pokud potřebujete speciálně stylovat logo pro levé umístění */
+.navbar-container .logo-link {
+    margin-right: auto; /* Tlačí logo na začátek */
 }

@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import FormInput from "@/components/FormInput";
 import {useState} from "react";
-import { handleFormChange, handleFormSubmit } from "../helpers/formHelpers";
+import {handleFormChange, handleFormSubmit, handleLogin} from "@/helpers/formHelpers";
 
 
 export default function LoginPage() {
@@ -14,9 +14,8 @@ export default function LoginPage() {
     })
 
     const handleSubmit = (e: React.FormEvent) => {
-        handleFormSubmit(e, loginData);
+        handleLogin(e, loginData);
     };
-
 
     return (
         <>
@@ -35,6 +34,7 @@ export default function LoginPage() {
                         label="Heslo:"
                         name="password"
                         placeholder="heslo"
+                        type="password"
                         value={loginData.password}
                         onChange={(e) => handleFormChange(e, setLoginData)}
                     />

@@ -2,6 +2,8 @@ import '../styles/globals.css'
 import Navbar from '../components/Navbar';
 import CardLink from '../components/CardLink';
 import '../styles/Home.css';
+import {Switch} from "@/components/ui/switch";
+
 
 export default function Home() {
     return (

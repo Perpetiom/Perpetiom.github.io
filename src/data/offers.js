@@ -6,7 +6,11 @@ export const MOCK_DATA = [
     "price": "Dohodou",
     "tags": ["VIP", "Nabídka", "Malíř", "Praha"],
     "contact": "malir.pavel@email.cz, +420 777 123 456",
-    "moreDetails": "Specializuji se na moderní i klasické techniky, jako je štukatura a benátský štuk. Pracuji s kvalitními ekologickými barvami."
+    "moreDetails": {
+      "location": "Praha",
+      "profession": "Malíř",
+      "details": "Specializuji se na moderní i klasické techniky, jako je štukatura a benátský štuk. Pracuji s kvalitními ekologickými barvami."
+    }
   },
   {
     "id": "vip-2",
@@ -15,7 +19,11 @@ export const MOCK_DATA = [
     "price": "od 50 000 Kč",
     "tags": ["VIP", "Nabídka", "Zedník", "Instalatér", "Ostrava"],
     "contact": "koupelny.reko@gmail.com, +420 605 987 654",
-    "moreDetails": "Zajišťuji kompletní servis včetně bouracích prací, rozvodů vody, elektřiny a pokládky obkladů. Reference na vyžádání."
+    "moreDetails": {
+      "location": "Ostrava",
+      "profession": "Zedník",
+      "details": "Zajišťuji kompletní servis včetně bouracích prací, rozvodů vody, elektřiny a pokládky obkladů. Reference na vyžádání."
+    }
   },
   {
     "id": "vip-3",
@@ -24,7 +32,11 @@ export const MOCK_DATA = [
     "price": "od 1500 Kč/hod",
     "tags": ["VIP", "Nabídka", "Elektrikář", "Brno"],
     "contact": "elektro.brno@seznam.cz, +420 724 112 233",
-    "moreDetails": "Zabývám se novými instalacemi, opravami a revizemi. Kladu důraz na bezpečnost a dodržení norem. Non-stop havarijní servis."
+    "moreDetails": {
+      "location": "Brno",
+      "profession": "Elektrikář",
+      "details": "Zabývám se novými instalacemi, opravami a revizemi. Kladu důraz na bezpečnost a dodržení norem. Non-stop havarijní servis."
+    }
   },
   {
     "id": "vip-4",
@@ -33,7 +45,11 @@ export const MOCK_DATA = [
     "price": "Dohodou",
     "tags": ["VIP", "Nabídka", "Truhlář", "Praha"],
     "contact": "truhlar.petr@email.cz, +420 608 555 666",
-    "moreDetails": "Pracuji s masivním dřevem i laminem. Každý kus je originál. Možnost 3D vizualizace před výrobou."
+    "moreDetails": {
+      "location": "Praha",
+      "profession": "Truhlář",
+      "details": "Pracuji s masivním dřevem i laminem. Každý kus je originál. Možnost 3D vizualizace před výrobou."
+    }
   },
   {
     "id": "vip-5",
@@ -42,7 +58,11 @@ export const MOCK_DATA = [
     "price": "400 Kč/m²",
     "tags": ["VIP", "Nabídka", "Zedník", "Praha"],
     "contact": "podlahy.rychle@centrum.cz, +420 732 999 888",
-    "moreDetails": "Nabízím komplexní služby včetně přípravy podkladu a lištování. Rychlá realizace, záruka na provedenou práci."
+    "moreDetails": {
+      "location": "Praha",
+      "profession": "Zedník",
+      "details": "Nabízím komplexní služby včetně přípravy podkladu a lištování. Rychlá realizace, záruka na provedenou práci."
+    }
   },
 
   {
@@ -52,7 +72,11 @@ export const MOCK_DATA = [
     "price": "Dohodou",
     "tags": ["Nabídka", "Zedník", "Brno"],
     "contact": "zednik.honza@email.cz, +420 777 555 123",
-    "moreDetails": "Jsem zkušený zedník s praxí. V případě zájmu zašlu nezávaznou cenovou kalkulaci."
+    "moreDetails": {
+      "location": "Brno",
+      "profession": "Zedník",
+      "details": "Jsem zkušený zedník s praxí. V případě zájmu zašlu nezávaznou cenovou kalkulaci."
+    }
   },
   {
     "id": "o-2",
@@ -61,7 +85,11 @@ export const MOCK_DATA = [
     "price": "250 Kč/hod",
     "tags": ["Nabídka", "Elektrikář", "Praha"],
     "contact": "elektro.opravy@seznam.cz, +420 605 123 456",
-    "moreDetails": "Drobné práce a havárie v domácnosti i o víkendech. Vždy poctivá práce."
+    "moreDetails": {
+      "location": "Praha",
+      "profession": "Elektrikář",
+      "details": "Drobné práce a havárie v domácnosti i o víkendech. Vždy poctivá práce."
+    }
   },
   {
     "id": "o-3",
@@ -70,7 +98,11 @@ export const MOCK_DATA = [
     "price": "Dohodou",
     "tags": ["Nabídka", "Truhlář", "Ostrava"],
     "contact": "kuchyne.na.miru@gmail.com, +420 724 999 000",
-    "moreDetails": "Montuji všechny typy kuchyňských linek. Rychlé a čisté provedení, včetně spotřebičů."
+    "moreDetails": {
+      "location": "Ostrava",
+      "profession": "Truhlář",
+      "details": "Montuji všechny typy kuchyňských linek. Rychlé a čisté provedení, včetně spotřebičů."
+    }
   },
   {
     "id": "o-4",
@@ -79,7 +111,11 @@ export const MOCK_DATA = [
     "price": "200 Kč/m²",
     "tags": ["Nabídka", "Malíř", "Praha"],
     "contact": "malir.franta@email.cz, +420 608 111 222",
-    "moreDetails": "Používám kvalitní interiérové barvy. Možnost výběru z široké škály odstínů."
+    "moreDetails": {
+      "location": "Praha",
+      "profession": "Malíř",
+      "details": "Používám kvalitní interiérové barvy. Možnost výběru z široké škály odstínů."
+    }
   },
   {
     "id": "o-5",
@@ -88,7 +124,11 @@ export const MOCK_DATA = [
     "price": "600 Kč/hod",
     "tags": ["Nabídka", "Instalatér", "Brno"],
     "contact": "havarie.voda@centrum.cz, +420 732 555 444",
-    "moreDetails": "Non-stop pohotovost v Brně a okolí. Rychlý dojezd v případě havárií."
+    "moreDetails": {
+      "location": "Brno",
+      "profession": "Instalatér",
+      "details": "Non-stop pohotovost v Brně a okolí. Rychlý dojezd v případě havárií."
+    }
   },
 
   {
@@ -98,7 +138,11 @@ export const MOCK_DATA = [
     "price": "Dohodou",
     "tags": ["Poptávka", "Zedník", "Praha"],
     "contact": "eva.novak@email.cz, +420 777 987 654",
-    "moreDetails": "Zídka by měla být z přírodního kamene, výška cca 50 cm, délka 8 m. Potřebuji někoho s referencemi."
+    "moreDetails": {
+      "location": "Praha",
+      "profession": "Zedník",
+      "details": "Zídka by měla být z přírodního kamene, výška cca 50 cm, délka 8 m. Potřebuji někoho s referencemi."
+    }
   },
   {
     "id": "p-2",
@@ -107,7 +151,11 @@ export const MOCK_DATA = [
     "price": "Dohodou",
     "tags": ["Poptávka", "Elektrikář", "Brno"],
     "contact": "jan.dvorak@email.cz, +420 605 456 789",
-    "moreDetails": "V bytě je stará elektroinstalace, proto potřebuji někoho, kdo má zkušenosti s prací v panelových domech."
+    "moreDetails": {
+      "location": "Brno",
+      "profession": "Elektrikář",
+      "details": "V bytě je stará elektroinstalace, proto potřebuji někoho, kdo má zkušenosti s prací v panelových domech."
+    }
   },
   {
     "id": "p-3",
@@ -116,7 +164,11 @@ export const MOCK_DATA = [
     "price": "Nabídněte",
     "tags": ["Poptávka", "Instalatér", "Ostrava"],
     "contact": "lenka.k@gmail.com, +420 724 333 222",
-    "moreDetails": "Preferuji rychlé a levné řešení. Termín po domluvě, ideálně hned."
+    "moreDetails": {
+      "location": "Ostrava",
+      "profession": "Instalatér",
+      "details": "Preferuji rychlé a levné řešení. Termín po domluvě, ideálně hned."
+    }
   },
   {
     "id": "p-4",
@@ -125,7 +177,11 @@ export const MOCK_DATA = [
     "price": "Dohodou",
     "tags": ["Poptávka", "Truhlář", "Brno"],
     "contact": "david.p@seznam.cz, +420 608 777 888",
-    "moreDetails": "Jedná se o 3 vnitřní dveře v bytě. Preferuji osobní schůzku pro odhad rozsahu práce."
+    "moreDetails": {
+      "location": "Brno",
+      "profession": "Truhlář",
+      "details": "Jedná se o 3 vnitřní dveře v bytě. Preferuji osobní schůzku pro odhad rozsahu práce."
+    }
   },
   {
     "id": "p-5",
@@ -134,6 +190,10 @@ export const MOCK_DATA = [
     "price": "Dohodou",
     "tags": ["Poptávka", "Malíř", "Praha"],
     "contact": "barbora.r@email.cz, +420 732 111 222",
-    "moreDetails": "Stěny a stropy, bílá barva. Termín po dohodě, ideálně do 14 dnů."
+    "moreDetails": {
+      "location": "Praha",
+      "profession": "Malíř",
+      "details": "Stěny a stropy, bílá barva. Termín po dohodě, ideálně do 14 dnů."
+    }
   }
 ]

@@ -10,7 +10,11 @@ interface OfferCardProps {
     price: string;
     tags?: string[];
     contact: string;
-    moreDetails: string;
+    moreDetails: {
+        location: string;
+        profession: string;
+        details: string;
+    };
 }
 
 export default function OfferCard({ title, description, price, tags, contact, moreDetails }: OfferCardProps) {
@@ -31,8 +35,7 @@ export default function OfferCard({ title, description, price, tags, contact, mo
         <div className={`offer-card ${isExpanded ? 'expanded' : ''}`} onClick={handleExpandClick}>
             {/* Základní zobrazení karty, které je vždy viditelné */}
             <h3 className="offer-card-title">{title}</h3>
-            <p className="offer-card-description">{description}</p>
-            <p className="offer-card-price">{price}</p>
+            <p className="offer-card-price">Cnea: {price}</p>
             <p className="offer-card-tags">
                 {tags && tags.length > 0 && tags.join(', ')}
             </p>
@@ -42,7 +45,13 @@ export default function OfferCard({ title, description, price, tags, contact, mo
                 <div className="offer-card-details">
                     <h4>Více informací</h4>
                     <p>
-                        {moreDetails || "Žádné další informace nejsou k dispozici."}
+                        <strong>Lokalita:</strong> {moreDetails.location}
+                    </p>
+                    <p>
+                        <strong>Obor:</strong> {moreDetails.profession}
+                    </p>
+                    <p>
+                        <strong>Detaily:</strong> {moreDetails.details}
                     </p>
 
                     {/* Podmíněné zobrazení kontaktu */}

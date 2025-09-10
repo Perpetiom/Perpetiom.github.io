@@ -3,22 +3,26 @@
 import Navbar from "@/components/Navbar";
 import FormInput from "@/components/FormInput";
 import '../../styles/CreateOffer.css';
-import {useState} from "react";
-import { handleFormChange, handleFormSubmit } from "../helpers/formHelpers";
+import {useEffect, useState} from "react";
+import { handleFormChange, handleFormSubmit, handleRequestSubmit, handleOfferSubmit } from "@/helpers/formHelpers";
+import {Switch} from "@radix-ui/react-switch";
+
 
 export default function CreateOffer() {
     const [formType, setFormType] = useState<'offer' | 'request'>('offer');
+    const [isVip, setIsVip] = useState(false);
 
     const [offerData, setOfferData] = useState({
         title: '',
         profession: '',
         date: '',
         location: '',
-        price: '',
+        budget: '',
         contactPerson: '',
         phoneNumber: '',
         email: '',
-        description: ''
+        description: '',
+        is_vip: false
     });
 
     const [requestData, setRequestData] = useState({
@@ -26,10 +30,11 @@ export default function CreateOffer() {
         profession: '',
         description: '',
         location: '',
-        budget: '',
+        price: '',
         contactPerson: '',
         phoneNumber: '',
         email: '',
+        is_vip: false
     });
 
     const today = new Date();
@@ -38,10 +43,9 @@ export default function CreateOffer() {
     const year = today.getFullYear();
     const formattedDate = `${day}.${month}.${year}`;
 
-
-    const handleSubmit = (e: React.FormEvent) => {
-        handleFormSubmit(e, requestData);
-    };
+    useEffect(() => {
+        console.log(offerData)
+    }, [offerData]);
 
 
     return (
@@ -64,8 +68,8 @@ export default function CreateOffer() {
             </div>
 
             <div className="create-offer-container">
-                {formType === 'offer' ? (
-                    <form onSubmit={handleSubmit} className="create-offer-form">
+                {formType === 'offer' ?
+                    (<form onSubmit={(e) => handleOfferSubmit(e, offerData)} className="create-offer-form">
                         <FormInput
                             label="Název nabídky"
                             name="title"
@@ -103,9 +107,9 @@ export default function CreateOffer() {
                         />
                         <FormInput
                             label="Cena"
-                            name="price"
+                            name="budget"
                             placeholder="30000Kč"
-                            value={offerData.price}
+                            value={offerData.budget}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                         />
                         <FormInput
@@ -131,11 +135,20 @@ export default function CreateOffer() {
                             onChange={(e) => handleFormChange(e, setOfferData)}
                             type="email"
                         />
+                        <div className="flex items-center space-x-2">
+                            <Switch
+                                id="is_vip"
+                                defaultChecked={requestData.is_vip}
+                                onCheckedChange={(value) => {
+                                    setOfferData({...offerData, is_vip: value});
+                                }}
+                            />
+                            <label htmlFor="is_vip">VIP</label>
+                        </div>
                         <button type="submit">Vytvořit nabídku</button>
-                    </form>
-
-                ) : (
-                    <form onSubmit={handleSubmit} className="create-offer-form">
+                    </form>)
+                    :
+                    (<form onSubmit={(e) => handleRequestSubmit(e, requestData)} className="create-offer-form">
                         <FormInput
                             label="Název nabídky"
                             name="title"
@@ -166,9 +179,9 @@ export default function CreateOffer() {
                         />
                         <FormInput
                             label="Cena - jak se cením"
-                            name="budget"
+                            name="price"
                             placeholder="30000Kč (domluvou)"
-                            value={requestData.budget}
+                            value={requestData.price}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
@@ -194,9 +207,20 @@ export default function CreateOffer() {
                             onChange={(e) => handleFormChange(e, setRequestData)}
                             type="email"
                         />
+                        <div className="flex items-center space-x-2">
+                            <Switch
+                                id="is_vip"
+                                defaultChecked={requestData.is_vip}
+                                onCheckedChange={(value) => {
+                                    setOfferData({...offerData, is_vip: value});
+                                }}
+                            />
+                            <label htmlFor="is_vip">VIP</label>
+                        </div>
                         <button type="submit">Vytvořit poptávku</button>
-                    </form>
-                )}
+                    </form>)
+                }
+
             </div>
         </>
     );
