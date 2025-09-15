@@ -5,7 +5,7 @@ import OfferCard from '../../components/OfferCard';
 import { useSearchParams } from 'next/navigation';
 import {useState, useMemo, useEffect} from 'react';
 import { MOCK_DATA } from '@/data/offers';
-import { ALL_TAGS } from '@/data/tags'; // Možná už nebudete potřebovat, pokud budete generovat tagy dynamicky
+import { useI18n } from "@/i18n/I18nProvider";
 import '../../styles/Offers.css';
 
 export default function OffersPage() {
@@ -71,6 +71,8 @@ export default function OffersPage() {
         return Array.from(tagsSet);
     }, [filteredOffers]);
 
+    const { t } = useI18n();
+
     return (
         <>
             <Navbar />
@@ -80,7 +82,7 @@ export default function OffersPage() {
                     className="filter-toggle-btn"
                     onClick={() => setIsFilterPanelVisible(!isFilterPanelVisible)}
                 >
-                    {isFilterPanelVisible ? 'Skrýt filtry' : 'Filtrovat'}
+                    {isFilterPanelVisible ? t.listings.hideFilter : t.listings.filter}
                 </button>
 
                 {/* Podmíněně vykreslený filtrovací panel */}
@@ -89,19 +91,19 @@ export default function OffersPage() {
                         <div className="filter-inputs">
                             <input
                                 type="text"
-                                placeholder="Lokalita..."
+                                placeholder={t.listings.location}
                                 value={searchLocation}
                                 onChange={e => setSearchLocation(e.target.value)}
                             />
                             <input
                                 type="text"
-                                placeholder="Obor..."
+                                placeholder={t.listings.field}
                                 value={searchField}
                                 onChange={e => setSearchField(e.target.value)}
                             />
                             <input
                                 type="text"
-                                placeholder="Cena (přibližně)..."
+                                placeholder={t.listings.price}
                                 value={searchPrice}
                                 onChange={e => setSearchPrice(e.target.value)}
                             />

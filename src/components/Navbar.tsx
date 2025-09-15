@@ -10,6 +10,9 @@ import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
 import logo from '../../public/assets/images/perpetiom-logo.png';
 
+import { useI18n } from "@/i18n/I18nProvider";
+import Dropdown from '@/components/ui/Dropdown'
+
 interface UserWithProfile extends User {
     profile?: {
         name: string;
@@ -17,8 +20,25 @@ interface UserWithProfile extends User {
     };
 }
 
+const RAW_LANGS = [
+    { code: "cs", label: "Čeština", emoji: "🇨🇿" },
+    { code: "sk", label: "Slovenčina", emoji: "🇸🇰" },
+    { code: "pl", label: "Polski", emoji: "🇵🇱" },
+    { code: "de", label: "Deutsch", emoji: "🇩🇪" },
+    { code: "en", label: "English", emoji: "🇬🇧" },
+];
+
+const items = RAW_LANGS.map(l => ({
+    value: l.code,
+    label: l.label,
+    icon: <span>{l.emoji}</span>,
+}));
+
 export default function Navbar() {
     const [user, setUser] = useState<UserWithProfile | null>(null);
+    const { langCode, setLangCode } = useI18n();
+
+    const { t } = useI18n();
 
     useEffect(() => {
         const fetchUserAndProfile = async () => {
@@ -79,16 +99,22 @@ export default function Navbar() {
                 <div className="nav-content">
                     {user ? (
                         <div className="user-info">
-                            <span>Přihlášen jako: {user.profile?.name ?? user.email} {user.profile?.surname || ''}</span>
-                            <button onClick={handleLogout} className="logout-button">Odhlásit se</button>
+                            <span>{t.navbar.loggedInAs} {user.profile?.name ?? user.email} {user.profile?.surname || ''}</span>
+                            <button onClick={handleLogout} className="logout-button">{t.navbar.signOut}</button>
                         </div>
                     ) : (
                         <div className="navbar-links">
-                            <Link href="/login">Přihlásit se</Link>
-                            <Link href="/register">Registrace</Link>
+                            <Link href="/login">{t.navbar.signIn}</Link>
+                            <Link href="/register">{t.navbar.register}</Link>
                         </div>
                     )}
                 </div>
+                <Dropdown
+                    items={items}
+                    value={langCode}
+                    onChange={(val) => setLangCode(val as any)}
+                    placeholder="Select language"
+                />
             </div>
         </nav>
     );

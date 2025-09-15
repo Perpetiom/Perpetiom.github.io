@@ -4,14 +4,15 @@ import Navbar from "@/components/Navbar";
 import FormInput from "@/components/FormInput";
 import '../../styles/CreateOffer.css';
 import {useEffect, useState} from "react";
-import { handleFormChange, handleFormSubmit, handleRequestSubmit, handleOfferSubmit } from "@/helpers/formHelpers";
+import {handleFormChange, handleFormSubmit, handleRequestSubmit, handleOfferSubmit} from "@/helpers/formHelpers";
 import {Switch} from "@radix-ui/react-switch";
+import {useI18n} from "@/i18n/I18nProvider";
 
 
 export default function CreateOffer() {
     const [formType, setFormType] = useState<'offer' | 'request'>('offer');
     const [isVip, setIsVip] = useState(false);
-
+    const {t} = useI18n();
     const [offerData, setOfferData] = useState({
         title: '',
         profession: '',
@@ -57,13 +58,13 @@ export default function CreateOffer() {
                     onClick={() => setFormType('offer')}
                     className={formType === 'offer' ? 'active' : ''}
                 >
-                    Vytvořit nabídku
+                    {t.createOfferForm.submit}
                 </button>
                 <button
                     onClick={() => setFormType('request')}
                     className={formType === 'request' ? 'active' : ''}
                 >
-                    Vytvořit poptávku
+                    {t.createRequestForm.submit}
                 </button>
             </div>
 
@@ -71,58 +72,58 @@ export default function CreateOffer() {
                 {formType === 'offer' ?
                     (<form onSubmit={(e) => handleOfferSubmit(e, offerData)} className="create-offer-form">
                         <FormInput
-                            label="Název nabídky"
+                            label={t.createOfferForm.title}
                             name="title"
-                            placeholder="Stavba zdi"
+                            placeholder={t.createOfferForm.titlePH}
                             value={offerData.title}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                         />
                         <FormInput
-                            label="Profese"
+                            label={t.createOfferForm.profession}
                             name="profession"
-                            placeholder="Zedník"
+                            placeholder={t.createOfferForm.professionPH}
                             value={offerData.profession}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                         />
                         <FormInput
-                            label="Popis"
+                            label={t.createOfferForm.description}
                             name="description"
-                            placeholder="Potřebuji postavit 2,5 metrů vysokou zeď o délce asi 5 metrů zahradě"
+                            placeholder={t.createOfferForm.descriptionPH}
                             value={offerData.description}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                         />
                         <FormInput
-                            label="Termín"
+                            label={t.createOfferForm.date}
                             name="date"
                             placeholder={formattedDate}
                             value={offerData.date}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                         />
                         <FormInput
-                            label="Místo"
+                            label={t.createOfferForm.location}
                             name="location"
-                            placeholder="Praha 5"
+                            placeholder={t.createOfferForm.locationPH}
                             value={offerData.location}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                         />
                         <FormInput
-                            label="Cena"
+                            label={t.createOfferForm.price}
                             name="budget"
-                            placeholder="30000Kč"
+                            placeholder={t.createOfferForm.budgetPH}
                             value={offerData.budget}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                         />
                         <FormInput
-                            label="Kontaktní osoba"
+                            label={t.createOfferForm.contactPerson}
                             name="contactPerson"
-                            placeholder='Jan Novák'
+                            placeholder={t.createOfferForm.contactPersonPH}
                             value={offerData.contactPerson}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                         />
                         <FormInput
-                            label="Telefonní číslo"
+                            label={t.createOfferForm.phoneNumber}
                             name="phoneNumber"
-                            placeholder="+420123456789"
+                            placeholder={t.createOfferForm.phoneNumberPH}
                             value={offerData.phoneNumber}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                             type="tel"
@@ -130,7 +131,7 @@ export default function CreateOffer() {
                         <FormInput
                             label="E-mail"
                             name="email"
-                            placeholder="jan.novak@email.cz"
+                            placeholder={t.createOfferForm.emailPH}
                             value={offerData.email}
                             onChange={(e) => handleFormChange(e, setOfferData)}
                             type="email"
@@ -145,56 +146,56 @@ export default function CreateOffer() {
                             />
                             <label htmlFor="is_vip">VIP</label>
                         </div>
-                        <button type="submit">Vytvořit nabídku</button>
+                        <button type="submit">{t.createOfferForm.submit}</button>
                     </form>)
                     :
                     (<form onSubmit={(e) => handleRequestSubmit(e, requestData)} className="create-offer-form">
                         <FormInput
-                            label="Název nabídky"
+                            label={t.createRequestForm.title}
                             name="title"
-                            placeholder="Umim stavět zdi"
+                            placeholder={t.createRequestForm.title}
                             value={requestData.title}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
-                            label="Profese"
+                            label={t.createRequestForm.profession}
                             name="profession"
-                            placeholder="Zedník"
+                            placeholder={t.createRequestForm.profession}
                             value={requestData.profession}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
-                            label="Popis"
+                            label={t.createRequestForm.description}
                             name="description"
-                            placeholder="Umím to a to..."
+                            placeholder={t.createRequestForm.description}
                             value={requestData.description}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
-                            label="Místo"
+                            label={t.createRequestForm.location}
                             name="location"
-                            placeholder="Praha 5"
+                            placeholder={t.createRequestForm.location}
                             value={requestData.location}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
-                            label="Cena - jak se cením"
+                            label={t.createRequestForm.priceHowIValue}
                             name="price"
-                            placeholder="30000Kč (domluvou)"
+                            placeholder={t.createRequestForm.priceHowIValue}
                             value={requestData.price}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
-                            label="Kontaktní osoba"
+                            label={t.createRequestForm.title}
                             name="contactPerson"
-                            placeholder='Jan Novák'
+                            placeholder={t.createRequestForm.title}
                             value={requestData.contactPerson}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
-                            label="Telefonní číslo"
+                            label={t.createRequestForm.phoneNumber}
                             name="phoneNumber"
-                            placeholder="+420123456789"
+                            placeholder={t.createRequestForm.phoneNumberPH}
                             value={requestData.phoneNumber}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                             type="tel"
@@ -202,7 +203,7 @@ export default function CreateOffer() {
                         <FormInput
                             label="E-mail"
                             name="email"
-                            placeholder="jan.novak@email.cz"
+                            placeholder={t.createRequestForm.emailPH}
                             value={requestData.email}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                             type="email"
@@ -217,7 +218,7 @@ export default function CreateOffer() {
                             />
                             <label htmlFor="is_vip">VIP</label>
                         </div>
-                        <button type="submit">Vytvořit poptávku</button>
+                        <button type="submit">{t.createRequestForm.submit}</button>
                     </form>)
                 }
 
