@@ -1,7 +1,10 @@
-'use client'; // Nezapomeň, že pro stav potřebujeme Client komponentu
+'use client';
 
 import { useState } from 'react';
-import '../styles/OfferCard.css'; // Můžeš použít vlastní styly
+import '../styles/OfferCard.css';
+import { useI18n } from "@/i18n/I18nProvider";
+
+type LangCode = "cs" | "pl" | "de" | "sk" | "en";
 
 interface OfferCardProps {
     id: string | number;
@@ -21,12 +24,14 @@ export default function OfferCard({ title, description, price, tags, contact, mo
     const [isExpanded, setIsExpanded] = useState(false);
     const [hasPaid, setHasPaid] = useState(false);
 
+    const { t } = useI18n();
+
     const handleExpandClick = () => {
-        setIsExpanded(!isExpanded); // Přepíná stav mezi true a false
+        setIsExpanded(!isExpanded);
     };
 
     const handlePayClick = (e: React.MouseEvent) => {
-        e.stopPropagation(); // Zastaví rozkliknutí karty
+        e.stopPropagation();
         setHasPaid(true);
         alert('Děkujeme za platbu! Kontakt je nyní viditelný.');
     };
@@ -35,12 +40,11 @@ export default function OfferCard({ title, description, price, tags, contact, mo
         <div className={`offer-card ${isExpanded ? 'expanded' : ''}`} onClick={handleExpandClick}>
             {/* Základní zobrazení karty, které je vždy viditelné */}
             <h3 className="offer-card-title">{title}</h3>
-            <p className="offer-card-price">Cnea: {price}</p>
+            <p className="offer-card-price">Cena: {price}</p>
             <p className="offer-card-tags">
                 {tags && tags.length > 0 && tags.join(', ')}
             </p>
 
-            {/* Tento blok se zobrazí pouze, když je isExpanded rovno true */}
             {isExpanded && (
                 <div className="offer-card-details">
                     <h4>Více informací</h4>
@@ -51,14 +55,16 @@ export default function OfferCard({ title, description, price, tags, contact, mo
                         <strong>Obor:</strong> {moreDetails.profession}
                     </p>
                     <p>
-                        <strong>Detaily:</strong> {moreDetails.details}
+                        <strong>Detaily:</strong> {description}
                     </p>
 
                     {/* Podmíněné zobrazení kontaktu */}
                     {hasPaid ? (
-                        <p>
-                            <strong>Kontakt:</strong> {contact || "Není k dispozici."}
-                        </p>
+                        contact ? (
+                            <p>
+                                <strong>Kontakt:</strong> {contact}
+                            </p>
+                        ) : null
                     ) : (
                         <button className="pay-button" onClick={handlePayClick}>
                             Zaplatit pro zobrazení kontaktu

@@ -3,30 +3,59 @@
 import Navbar from "@/components/Navbar";
 import FormInput from "@/components/FormInput";
 import '../../styles/CreateOffer.css';
-import {useEffect, useState} from "react";
-import {handleFormChange, handleFormSubmit, handleRequestSubmit, handleOfferSubmit} from "@/helpers/formHelpers";
-import {Switch} from "@radix-ui/react-switch";
-import {useI18n} from "@/i18n/I18nProvider";
+import { useState } from "react";
+import { handleFormChange, handleRequestSubmit, handleOfferSubmit } from "@/helpers/formHelpers";
+import { Switch } from "@radix-ui/react-switch";
+import { useI18n } from "@/i18n/I18nProvider";
+import type { Dictionary } from "@/app/constants/dict";
 
+type TDict = Dictionary;
+
+// ✱ TIP: sjednoť typy s formulářem – date a price/budget jako stringy:
+type OfferFormState = {
+    title: string;
+    profession: string;
+    date: string;        // <-- string 'YYYY-MM-DD'
+    location: string;
+    budget: string;
+    contactPerson: string;
+    phoneNumber: string;
+    email: string;
+    description: string;
+    is_vip: boolean;
+};
+
+type RequestFormState = {
+    title: string;
+    profession: string;
+    description: string;
+    location: string;
+    price: string;
+    contactPerson: string;
+    phoneNumber: string;
+    email: string;
+    is_vip: boolean;
+};
 
 export default function CreateOffer() {
     const [formType, setFormType] = useState<'offer' | 'request'>('offer');
-    const [isVip, setIsVip] = useState(false);
-    const {t} = useI18n();
-    const [offerData, setOfferData] = useState({
+    const [submitting, setSubmitting] = useState(false);
+    const { t } = useI18n();
+
+    const [offerData, setOfferData] = useState<OfferFormState>({
         title: '',
         profession: '',
-        date: '',
+        date: '', // 'YYYY-MM-DD'
         location: '',
         budget: '',
         contactPerson: '',
         phoneNumber: '',
         email: '',
         description: '',
-        is_vip: false
+        is_vip: false,
     });
 
-    const [requestData, setRequestData] = useState({
+    const [requestData, setRequestData] = useState<RequestFormState>({
         title: '',
         profession: '',
         description: '',
@@ -35,23 +64,63 @@ export default function CreateOffer() {
         contactPerson: '',
         phoneNumber: '',
         email: '',
-        is_vip: false
+        is_vip: false,
     });
 
-    const today = new Date();
-    const day = String(today.getDate()).padStart(2, '0');
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const year = today.getFullYear();
-    const formattedDate = `${day}.${month}.${year}`;
+    // ✅ Nepředávej t jako parametr; je z closure
+    const onSubmitOffer = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (submitting) return;
+        setSubmitting(true);
+        try {
+            // helper čeká OfferData (má u tebe date: Date|null). Dvě možnosti:
+            // A) změnit typ OfferData na date: string | null
+            // B) převést string -> Date|null zde. Ukážu variantu B:
+            const dateValue = offerData.date ? new Date(offerData.date) : null;
 
-    useEffect(() => {
-        console.log(offerData)
-    }, [offerData]);
+            await handleOfferSubmit(
+                e,
+                {
+                    title: offerData.title,
+                    profession: offerData.profession,
+                    date: isNaN(dateValue as any) ? null : dateValue, // ochrana před nevalidním datem
+                    description: offerData.description,
+                    location: offerData.location,
+                    budget: offerData.budget,
+                    is_vip: offerData.is_vip,
+                },
+                t
+            );
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
+    const onSubmitRequest = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (submitting) return;
+        setSubmitting(true);
+        try {
+            await handleRequestSubmit(
+                e,
+                {
+                    title: requestData.title,
+                    profession: requestData.profession,
+                    description: requestData.description,
+                    location: requestData.location,
+                    price: requestData.price,
+                    is_vip: requestData.is_vip,
+                },
+                t
+            );
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
 
             <div className="form-selector">
                 <button
@@ -69,8 +138,8 @@ export default function CreateOffer() {
             </div>
 
             <div className="create-offer-container">
-                {formType === 'offer' ?
-                    (<form onSubmit={(e) => handleOfferSubmit(e, offerData)} className="create-offer-form">
+                {formType === 'offer' ? (
+                    <form onSubmit={onSubmitOffer} className="create-offer-form">
                         <FormInput
                             label={t.createOfferForm.title}
                             name="title"
@@ -95,9 +164,10 @@ export default function CreateOffer() {
                         <FormInput
                             label={t.createOfferForm.date}
                             name="date"
-                            placeholder={formattedDate}
+                            placeholder="YYYY-MM-DD"
                             value={offerData.date}
                             onChange={(e) => handleFormChange(e, setOfferData)}
+                            type="date"
                         />
                         <FormInput
                             label={t.createOfferForm.location}
@@ -112,116 +182,75 @@ export default function CreateOffer() {
                             placeholder={t.createOfferForm.budgetPH}
                             value={offerData.budget}
                             onChange={(e) => handleFormChange(e, setOfferData)}
-                        />
-                        <FormInput
-                            label={t.createOfferForm.contactPerson}
-                            name="contactPerson"
-                            placeholder={t.createOfferForm.contactPersonPH}
-                            value={offerData.contactPerson}
-                            onChange={(e) => handleFormChange(e, setOfferData)}
-                        />
-                        <FormInput
-                            label={t.createOfferForm.phoneNumber}
-                            name="phoneNumber"
-                            placeholder={t.createOfferForm.phoneNumberPH}
-                            value={offerData.phoneNumber}
-                            onChange={(e) => handleFormChange(e, setOfferData)}
-                            type="tel"
-                        />
-                        <FormInput
-                            label="E-mail"
-                            name="email"
-                            placeholder={t.createOfferForm.emailPH}
-                            value={offerData.email}
-                            onChange={(e) => handleFormChange(e, setOfferData)}
-                            type="email"
+                            type="number"
                         />
                         <div className="flex items-center space-x-2">
                             <Switch
                                 id="is_vip"
-                                defaultChecked={requestData.is_vip}
-                                onCheckedChange={(value) => {
-                                    setOfferData({...offerData, is_vip: value});
-                                }}
+                                defaultChecked={offerData.is_vip}
+                                onCheckedChange={(value) =>
+                                    setOfferData((prev) => ({ ...prev, is_vip: value }))
+                                }
                             />
                             <label htmlFor="is_vip">VIP</label>
                         </div>
-                        <button type="submit">{t.createOfferForm.submit}</button>
-                    </form>)
-                    :
-                    (<form onSubmit={(e) => handleRequestSubmit(e, requestData)} className="create-offer-form">
+                        <button type="submit" disabled={submitting}>
+                            {submitting ? t.createOfferForm.submitting : t.createOfferForm.submit}
+                        </button>
+                    </form>
+                ) : (
+                    <form onSubmit={onSubmitRequest} className="create-offer-form">
                         <FormInput
                             label={t.createRequestForm.title}
                             name="title"
-                            placeholder={t.createRequestForm.title}
+                            placeholder={t.createRequestForm.titlePH}
                             value={requestData.title}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
                             label={t.createRequestForm.profession}
                             name="profession"
-                            placeholder={t.createRequestForm.profession}
+                            placeholder={t.createRequestForm.professionPH}
                             value={requestData.profession}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
                             label={t.createRequestForm.description}
                             name="description"
-                            placeholder={t.createRequestForm.description}
+                            placeholder={t.createRequestForm.descriptionPH}
                             value={requestData.description}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
                             label={t.createRequestForm.location}
                             name="location"
-                            placeholder={t.createRequestForm.location}
+                            placeholder={t.createRequestForm.locationPH}
                             value={requestData.location}
                             onChange={(e) => handleFormChange(e, setRequestData)}
                         />
                         <FormInput
                             label={t.createRequestForm.priceHowIValue}
                             name="price"
-                            placeholder={t.createRequestForm.priceHowIValue}
+                            placeholder={t.createRequestForm.pricePH}
                             value={requestData.price}
                             onChange={(e) => handleFormChange(e, setRequestData)}
-                        />
-                        <FormInput
-                            label={t.createRequestForm.title}
-                            name="contactPerson"
-                            placeholder={t.createRequestForm.title}
-                            value={requestData.contactPerson}
-                            onChange={(e) => handleFormChange(e, setRequestData)}
-                        />
-                        <FormInput
-                            label={t.createRequestForm.phoneNumber}
-                            name="phoneNumber"
-                            placeholder={t.createRequestForm.phoneNumberPH}
-                            value={requestData.phoneNumber}
-                            onChange={(e) => handleFormChange(e, setRequestData)}
-                            type="tel"
-                        />
-                        <FormInput
-                            label="E-mail"
-                            name="email"
-                            placeholder={t.createRequestForm.emailPH}
-                            value={requestData.email}
-                            onChange={(e) => handleFormChange(e, setRequestData)}
-                            type="email"
+                            type="number"
                         />
                         <div className="flex items-center space-x-2">
                             <Switch
                                 id="is_vip"
                                 defaultChecked={requestData.is_vip}
-                                onCheckedChange={(value) => {
-                                    setOfferData({...offerData, is_vip: value});
-                                }}
+                                onCheckedChange={(value) =>
+                                    setRequestData((prev) => ({ ...prev, is_vip: value }))
+                                }
                             />
                             <label htmlFor="is_vip">VIP</label>
                         </div>
-                        <button type="submit">{t.createRequestForm.submit}</button>
-                    </form>)
-                }
-
+                        <button type="submit" disabled={submitting}>
+                            {submitting ? t.createRequestForm.submitting : t.createRequestForm.submit}
+                        </button>
+                    </form>
+                )}
             </div>
         </>
     );

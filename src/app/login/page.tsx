@@ -3,8 +3,11 @@
 import Navbar from "@/components/Navbar";
 import FormInput from "@/components/FormInput";
 import {useState} from "react";
-import {handleFormChange, handleFormSubmit, handleLogin} from "@/helpers/formHelpers";
+import {handleFormChange, handleLogin} from "@/helpers/formHelpers";
+import {useI18n} from "@/i18n/I18nProvider";
+import type { Dictionary } from "@/app/constants/dict";
 
+type TDict = Dictionary;
 
 export default function LoginPage() {
 
@@ -13,16 +16,18 @@ export default function LoginPage() {
         password: "",
     })
 
-    const handleSubmit = (e: React.FormEvent) => {
-        handleLogin(e, loginData);
+    const handleSubmit = (e: React.FormEvent, t: TDict) => {
+        handleLogin(e, loginData, t);
     };
+
+    const { t } = useI18n();
 
     return (
         <>
             <Navbar/>
             <div className="create-offer-container">
-                <h1>Přihlásit se</h1>
-                <form onSubmit={handleSubmit} className="create-offer-form">
+                <h1>{t.login.title}</h1>
+                <form onSubmit={(e) => handleSubmit(e, t)} className="create-offer-form">
                     <FormInput
                         label="Email:"
                         name="email"
@@ -31,14 +36,14 @@ export default function LoginPage() {
                         onChange={(e) => handleFormChange(e, setLoginData)}
                     />
                     <FormInput
-                        label="Heslo:"
+                        label={t.login.password}
                         name="password"
                         placeholder="heslo"
                         type="password"
                         value={loginData.password}
                         onChange={(e) => handleFormChange(e, setLoginData)}
                     />
-                    <button type="submit">Přihlásit se</button>
+                    <button type="submit">{t.login.title}</button>
                 </form>
             </div>
         </>

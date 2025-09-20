@@ -1,17 +1,8 @@
-// utils/formHelpers.ts
-
 import React from "react";
 import { supabase } from '@/lib/supabase';
+import type { Dictionary } from "@/app/constants/dict";
 
-type RegistrationData = {
-    email: string;
-    phoneNumber: string;
-    name: string;
-    surname: string;
-    password: string;
-    passwordConfirmation: string;
-    ico: string;
-}
+type TDict = Dictionary;
 
 type LoginData = {
     email: string;
@@ -21,13 +12,10 @@ type LoginData = {
 type OfferData = {
     title: string;
     profession: string;
-    date: string;
+    date: Date | null;
     description: string;
     location: string;
     budget: string;
-    contactPerson: string;
-    phoneNumber: string;
-    email: string;
     is_vip: boolean;
 }
 
@@ -37,11 +25,16 @@ type RequestData = {
     description: string;
     location: string;
     price: string;
-    contactPerson: string;
-    phoneNumber: string;
-    email: string;
     is_vip: boolean;
 }
+
+const d = new Date();
+const yyyy = d.getFullYear();
+const mm = String(d.getMonth() + 1).padStart(2, '0');
+const dd = String(d.getDate()).padStart(2, '0');
+const ymd = `${yyyy}.${mm}.${dd}`;
+
+
 
 export const handleFormChange = <T>(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -54,48 +47,8 @@ export const handleFormChange = <T>(
     }));
 };
 
-// v handleFormSubmit ve formHelpers.ts
-export const handleFormSubmit = async (e: React.FormEvent, data: RegistrationData) => {
-    e.preventDefault();
-    const { email, password } = data;
 
-    try {
-        // 1. Registrace uživatele
-        const { data: signUpData, error: authError } = await supabase.auth.signUp({
-            email,
-            password,
-        });
-
-        if (authError) {
-            console.error('Chyba při registraci:', authError.message);
-            return;
-        }
-
-        if (signUpData.user) {
-            const userId = signUpData.user.id;
-
-            // 2. Pokus o přihlášení IHNED po registraci, aby byla session aktivní
-            // Toto je klíčový krok, pokud máte problémy s RLS po signUp
-            const { error: signInError } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-            });
-
-            if (signInError) {
-                console.error('Chyba při přihlášení po registraci:', signInError.message);
-                // Toto by nemělo nastat, pokud registrace proběhla úspěšně
-                return;
-            }
-
-            console.log('Registrace a uložení profilu úspěšné!');
-            // Přesměrování
-        }
-    } catch (error) {
-        console.error('Došlo k neočekávané chybě:', error);
-    }
-};
-
-export const handleLogin = async (e: React.FormEvent, data: LoginData) => {
+export const handleLogin = async (e: React.FormEvent, data: LoginData, t:TDict) => {
     e.preventDefault();
 
     try {
@@ -105,74 +58,248 @@ export const handleLogin = async (e: React.FormEvent, data: LoginData) => {
         });
 
         if (authError) {
-            console.error('Chyba při přihlašování:', authError.message);
-            // Zobrazit chybovou zprávu
+            alert(`${t.errorMessages.loginError}: ${authError.message}`);
             return;
         }
 
-        console.log('Přihlášení úspěšné!', userData);
-        // Zde můžete přesměrovat uživatele na jeho profil nebo dashboard
     } catch (error) {
-        console.error('Došlo k neočekávané chybě:', error);
+        alert(`${t.errorMessages.unexpectedError}: ${String(error)}`);
     }
 };
 
-export const handleOfferSubmit = async (e: React.FormEvent, data: OfferData) => {
+export const handleOfferSubmit = async (
+    e: React.FormEvent,
+    data: OfferData,
+    t: TDict
+) => {
     e.preventDefault();
 
     try {
-        const { error } = await supabase
-            .from('listings')
-            .insert([{
-                title: data.title,
-                profession: data.profession,
-                description: data.description,
-                location: data.location,
-                price: data.budget,
-                contact_person: data.contactPerson,
+        // 0) UX: zkontrolovat přihlášení hned na začátku
+        const { data: userRes, error: userErr } = await supabase.auth.getUser();
+        if (userErr || !userRes?.user) {
+            alert(t.errorMessages.mustBeLoggedIn);
+            return; // důležité, ať kód nepokračuje
+        }
+
+        // 1) GPT validátor (voláme až když víme, že user je přihlášen)
+        const res = await fetch("/api/validate-listing", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                ...data,
                 is_offer: true,
-                is_vip: false,
-                phone_number: data.phoneNumber,
-                email: data.email,
-            }]);
+                is_vip: Boolean(data.is_vip),
+            }),
+        });
+
+        const check = await res.json();
+
+        if (!res.ok || !check.ok) {
+            alert(
+                check?.details?.reasons?.join("\n") ||
+                check?.reason ||
+                t.errorMessages.listingValidationFailed
+            );
+            return; // zastav, validace neprošla
+        }
+
+        const { normalized, translations, reasons, piiFound } = check.result;
+
+        // 2) i18n JSONB
+        const title_i18n = translations
+            ? {
+                cs: translations.cs.title,
+                pl: translations.pl.title,
+                de: translations.de.title,
+                sk: translations.sk.title,
+                en: translations.en.title,
+            }
+            : null;
+
+        const profession_i18n = translations
+            ? {
+                cs: translations.cs.profession,
+                pl: translations.pl.profession,
+                de: translations.de.profession,
+                sk: translations.sk.profession,
+                en: translations.en.profession,
+            }
+            : null;
+
+        const description_i18n = translations
+            ? {
+                cs: translations.cs.description,
+                pl: translations.pl.description,
+                de: translations.de.description,
+                sk: translations.sk.description,
+                en: translations.en.description,
+            }
+            : null;
+
+        const location_i18n = translations
+            ? {
+                cs: translations.cs.location,
+                pl: translations.pl.location,
+                de: translations.de.location,
+                sk: translations.sk.location,
+                en: translations.en.location,
+            }
+            : null;
+
+        // 3) uložení do DB
+        const { error } = await supabase.from("listings").insert([
+            {
+                user_id: userRes.user.id,
+                title: normalized.title,
+                profession: normalized.profession,
+                description: normalized.description,
+                location: normalized.location,
+                price: normalized.price,
+                date: normalized.date ?? null,
+                created_at: ymd,
+                is_offer: true,
+                is_vip: normalized.is_vip ?? false,
+
+                title_i18n,
+                profession_i18n,
+                description_i18n,
+                location_i18n,
+
+                validation_ok: true,
+                validation_reasons: reasons ?? [],
+                pii_found: piiFound ?? { emails: [], phones: [], urls: [], socials: [] },
+            },
+        ]);
 
         if (error) {
-            console.error('Chyba při ukládání nabídky:', error.message);
+            alert(`${t.errorMessages.listingSaveError}: ${String(error.message ?? error)}`);
             return;
         }
 
-        console.log('Nabídka byla úspěšně uložena!');
-    } catch (error) {
-        console.error('Neočekávaná chyba při ukládání nabídky:', error);
+        alert(t.errorMessages.listingSaved);
+    } catch (err: any) {
+        // sem spadne síťová chyba, 500 z API, atd.
+        alert(`${t.errorMessages.unexpectedError}: ${err?.message ?? String(err)}`);
+        return;
     }
 };
 
-export const handleRequestSubmit = async (e: React.FormEvent, data: RequestData) => {
+
+
+export const handleRequestSubmit = async (
+    e: React.FormEvent,
+    data: RequestData,
+    t: TDict
+) => {
     e.preventDefault();
 
     try {
-        const { error } = await supabase
-            .from('listings')
-            .insert([{
-                title: data.title,
-                profession: data.profession,
-                description: data.description,
-                location: data.location,
-                price: data.price,
-                contact_person: data.contactPerson,
-                is_offer: false,
-                is_vip: false,
-                phone_number: data.phoneNumber,
-                email: data.email,
-            }]);
+        // 0) UX: zkontrolovat přihlášení hned na začátku
+        const { data: userRes, error: userErr } = await supabase.auth.getUser();
+        if (userErr || !userRes?.user) {
+            alert(t.errorMessages.mustBeLoggedIn);
+            return; // důležité, ať kód nepokračuje
+        }
 
-        if (error) {
-            console.error('Chyba při ukládání poptávky:', error.message);
+        // 1) GPT validátor (is_offer: false)
+        const res = await fetch("/api/validate-listing", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                ...data,
+                is_vip: Boolean(data.is_vip),
+                is_offer: false,
+            }),
+        });
+
+        const check = await res.json();
+
+        if (!res.ok || !check.ok) {
+            alert(
+                check?.details?.reasons?.join("\n") ||
+                check?.reason ||
+                t.errorMessages.listingValidationFailed
+            );
             return;
         }
 
-        console.log('Poptávka byla úspěšně uložena!');
-    } catch (error) {
-        console.error('Neočekávaná chyba při ukládání poptávky:', error);
+        const { normalized, translations, reasons, piiFound } = check.result;
+
+        // 2) i18n JSONB (pokud přišly překlady)
+        const title_i18n = translations
+            ? {
+                cs: translations.cs.title,
+                pl: translations.pl.title,
+                de: translations.de.title,
+                sk: translations.sk.title,
+                en: translations.en.title,
+            }
+            : null;
+
+        const profession_i18n = translations
+            ? {
+                cs: translations.cs.profession,
+                pl: translations.pl.profession,
+                de: translations.de.profession,
+                sk: translations.sk.profession,
+                en: translations.en.profession,
+            }
+            : null;
+
+        const description_i18n = translations
+            ? {
+                cs: translations.cs.description,
+                pl: translations.pl.description,
+                de: translations.de.description,
+                sk: translations.sk.description,
+                en: translations.en.description,
+            }
+            : null;
+
+        const location_i18n = translations
+            ? {
+                cs: translations.cs.location,
+                pl: translations.pl.location,
+                de: translations.de.location,
+                sk: translations.sk.location,
+                en: translations.en.location,
+            }
+            : null;
+
+        // 3) insert do DB
+        const { error } = await supabase.from("listings").insert([
+            {
+                user_id: userRes.user.id,
+                title: normalized.title,
+                profession: normalized.profession,
+                description: normalized.description,
+                location: normalized.location,
+                price: normalized.price,
+                created_at: ymd,
+                is_offer: false,
+                is_vip: normalized.is_vip ?? false,
+
+                title_i18n,
+                profession_i18n,
+                description_i18n,
+                location_i18n,
+
+                validation_ok: true,
+                validation_reasons: reasons ?? [],
+                pii_found: piiFound ?? { emails: [], phones: [], urls: [], socials: [] },
+            },
+        ]);
+
+        if (error) {
+            alert(`${t.errorMessages.listingSaveError}: ${error.message}`);
+            return;
+        }
+
+        alert(t.errorMessages.listingSaved);
+    } catch (err: any) {
+        alert(`${t.errorMessages.unexpectedError}: ${err?.message ?? String(err)}`);
+        return;
     }
 };
+

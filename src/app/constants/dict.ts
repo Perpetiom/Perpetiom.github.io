@@ -51,7 +51,7 @@ export type Dictionary = {
         submit: string;
         titlePH: string;
         professionPH: string;
-        descriptionPH:string;
+        descriptionPH: string;
         locationPH: string;
         budgetPH: string;
         contactPersonPH: string;
@@ -59,6 +59,7 @@ export type Dictionary = {
         createOfferPH: string;
         createRequestPH: string;
         emailPH: string;
+        submitting: string;
     };
     createRequestForm: {
         title: string;
@@ -77,6 +78,7 @@ export type Dictionary = {
         pricePH: string;
         contactPersonPH: string;
         emailPH: string;
+        submitting: string;
     };
     listings: {
         filter: string;
@@ -86,6 +88,42 @@ export type Dictionary = {
         field: string;
         details: string;
         payToViewContact: string;
+    };
+    offerPage: {
+        price: string;
+        moreInfo: string;
+        location: string;
+        field: string;
+        details: string;
+        contact: string;
+    };
+    errorMessages: {
+        registrationError: string;
+        loginAfterRegistrationError: string;
+        registrationSuccessProfileSaved: string;
+        unexpectedError: string;
+        loginError: string;
+        loginSuccess: string;
+        listingValidationFailed: string;
+        mustBeLoggedIn: string;
+        listingSaveError: string;
+        listingSaved: string;
+        profileSaveAfterLoginError: string;
+        profileCreateError: string;
+        profileSaveSuccess: string;
+        passwordsDoNotMatch: string;
+        registrationGenericError: string;
+        registrationEmailConfirm: string;
+    };
+    registerPage: {
+        title: string;
+        firstName: string;
+        lastName: string;
+        ico: string;
+        email: string;
+        phoneNumber: string;
+        password: string;
+        passwordConfirmation: string;
     };
 };
 
@@ -149,6 +187,7 @@ const dict = {
             createOfferPH: "Vytvořit nabídku",
             createRequestPH: "Vytvořit poptávku",
             emailPH: "jan.novak@email.cz",
+            submitting: "Odesílám…",
         },
         createRequestForm: {
             title: "Název nabídky",
@@ -167,6 +206,7 @@ const dict = {
             pricePH: "30000 Kč, a nebo dohodou",
             contactPersonPH: "Jan Novák",
             emailPH: "jan.novak@email.cz",
+            submitting: "Odesílám…",
         },
         listings: {
             filter: "Filtrovat",
@@ -176,6 +216,42 @@ const dict = {
             field: "Obor",
             details: "Detaily",
             payToViewContact: "Zaplatit pro zobrazení kontaktu",
+        },
+        offerPage: {
+            price: "Cena",
+            moreInfo: "Více informací",
+            location: "Lokalita",
+            field: "Obor",
+            details: "Detaily",
+            contact: "Kontakt",
+        },
+        errorMessages: {
+            registrationError: "Chyba při registraci",
+            loginAfterRegistrationError: "Chyba při přihlášení po registraci",
+            registrationSuccessProfileSaved: "Registrace a uložení profilu úspěšné!",
+            unexpectedError: "Došlo k neočekávané chybě",
+            loginError: "Chyba při přihlašování",
+            loginSuccess: "Přihlášení úspěšné!",
+            listingValidationFailed: "Nabídka/poptávka neprošla validací",
+            mustBeLoggedIn: "Musíte být přihlášeni",
+            listingSaveError: "Chyba při ukládání nabídky/poptávky",
+            listingSaved: "Nabídka uložena",
+            profileSaveAfterLoginError: "Chyba při ukládání profilu po přihlášení",
+            profileCreateError: "Chyba při vytváření profilu. Zkuste to prosím později.",
+            profileSaveSuccess: "Profil úspěšně uložen!",
+            passwordsDoNotMatch: "Hesla se neshodují",
+            registrationGenericError: "Chyba při registraci",
+            registrationEmailConfirm: "Registrace proběhla úspěšně! Zkontrolujte svůj e-mail pro potvrzení.",
+        },
+        registerPage: {
+            title: "Registrovat se",
+            firstName: "Jméno",
+            lastName: "Příjmení",
+            ico: "IČO",
+            email: "E-mail",
+            phoneNumber: "Telefonní číslo",
+            password: "Heslo",
+            passwordConfirmation: "Heslo znovu",
         },
     },
 
@@ -238,6 +314,7 @@ const dict = {
             createOfferPH: "Utwórz ofertę",
             createRequestPH: "Utwórz zapytanie",
             emailPH: "jan.kowalski@email.pl",
+            submitting: "Wysyłam…"
         },
         createRequestForm: {
             title: "Nazwa oferty",
@@ -256,6 +333,7 @@ const dict = {
             pricePH: "30000 PLN, albo do uzgodnienia",
             contactPersonPH: "Jan Kowalski",
             emailPH: "jan.kowalski@email.pl",
+            submitting: "Wysyłam…",
         },
         listings: {
             filter: "Filtruj",
@@ -265,6 +343,42 @@ const dict = {
             field: "Branża",
             details: "Szczegóły",
             payToViewContact: "Zapłać, aby zobaczyć kontakt",
+        },
+        offerPage: {
+            price: "Cena",
+            moreInfo: "Więcej informacji",
+            location: "Lokalizacja",
+            field: "Branża",
+            details: "Szczegóły",
+            contact: "Kontakt",
+        },
+        errorMessages: {
+            registrationError: "Błąd podczas rejestracji",
+            loginAfterRegistrationError: "Błąd logowania po rejestracji",
+            registrationSuccessProfileSaved: "Rejestracja i zapis profilu zakończone sukcesem!",
+            unexpectedError: "Wystąpił nieoczekiwany błąd",
+            loginError: "Błąd logowania",
+            loginSuccess: "Logowanie zakończone sukcesem!",
+            listingValidationFailed: "Oferta/zapytanie nie przeszło walidacji",
+            mustBeLoggedIn: "Musisz być zalogowany",
+            listingSaveError: "Błąd podczas zapisywania oferty/zapytania",
+            listingSaved: "Oferta została zapisana",
+            profileSaveAfterLoginError: "Błąd podczas zapisywania profilu po zalogowaniu",
+            profileCreateError: "Błąd podczas tworzenia profilu. Spróbuj ponownie później.",
+            profileSaveSuccess: "Profil został pomyślnie zapisany!",
+            passwordsDoNotMatch: "Hasła nie są identyczne",
+            registrationGenericError: "Błąd rejestracji",
+            registrationEmailConfirm: "Rejestracja zakończona sukcesem! Sprawdź swój e-mail, aby potwierdzić.",
+        },
+        registerPage: {
+            title: "Zarejestruj się",
+            firstName: "Imię",
+            lastName: "Nazwisko",
+            ico: "NIP",
+            email: "E-mail",
+            phoneNumber: "Numer telefonu",
+            password: "Hasło",
+            passwordConfirmation: "Powtórz hasło",
         },
     },
 
@@ -327,7 +441,7 @@ const dict = {
             createOfferPH: "Angebot erstellen",
             createRequestPH: "Anfrage erstellen",
             emailPH: "max.mueller@email.de",
-
+            submitting: "Sende…",
         },
         createRequestForm: {
             title: "Angebotsname",
@@ -346,6 +460,7 @@ const dict = {
             pricePH: "30000 €, oder nach Vereinbarung",
             contactPersonPH: "Max Müller",
             emailPH: "max.mueller@email.de",
+            submitting: "Sende…",
 
         },
         listings: {
@@ -356,6 +471,42 @@ const dict = {
             field: "Branche",
             details: "Details",
             payToViewContact: "Für Kontaktanzeige bezahlen",
+        },
+        offerPage: {
+            price: "Preis",
+            moreInfo: "Mehr Informationen",
+            location: "Standort",
+            field: "Branche",
+            details: "Details",
+            contact: "Kontakt",
+        },
+        errorMessages: {
+            registrationError: "Fehler bei der Registrierung",
+            loginAfterRegistrationError: "Fehler beim Anmelden nach der Registrierung",
+            registrationSuccessProfileSaved: "Registrierung und Profilspeicherung erfolgreich!",
+            unexpectedError: "Ein unerwarteter Fehler ist aufgetreten",
+            loginError: "Fehler bei der Anmeldung",
+            loginSuccess: "Anmeldung erfolgreich!",
+            listingValidationFailed: "Angebot/Anfrage hat die Validierung nicht bestanden",
+            mustBeLoggedIn: "Sie müssen angemeldet sein",
+            listingSaveError: "Fehler beim Speichern des Angebots/der Anfrage",
+            listingSaved: "Angebot gespeichert",
+            profileSaveAfterLoginError: "Fehler beim Speichern des Profils nach der Anmeldung",
+            profileCreateError: "Fehler beim Erstellen des Profils. Bitte versuchen Sie es später erneut.",
+            profileSaveSuccess: "Profil erfolgreich gespeichert!",
+            passwordsDoNotMatch: "Passwörter stimmen nicht überein",
+            registrationGenericError: "Fehler bei der Registrierung",
+            registrationEmailConfirm: "Registrierung erfolgreich! Bitte überprüfen Sie Ihre E-Mail zur Bestätigung.",
+        },
+        registerPage: {
+            title: "Registrieren",
+            firstName: "Vorname",
+            lastName: "Nachname",
+            ico: "USt-IdNr.",
+            email: "E-Mail",
+            phoneNumber: "Telefonnummer",
+            password: "Passwort",
+            passwordConfirmation: "Passwort wiederholen",
         },
     },
 
@@ -418,6 +569,7 @@ const dict = {
             createOfferPH: "Vytvoriť ponuku",
             createRequestPH: "Vytvoriť dopyt",
             emailPH: "jan.novak@email.sk",
+            submitting: "Odosielam…",
         },
         createRequestForm: {
             title: "Názov ponuky",
@@ -436,6 +588,7 @@ const dict = {
             pricePH: "30000 €, alebo dohodou",
             contactPersonPH: "Ján Novák",
             emailPH: "jan.novak@email.sk",
+            submitting: "Odosielam…",
         },
         listings: {
             filter: "Filtrovať",
@@ -445,6 +598,42 @@ const dict = {
             field: "Odbor",
             details: "Detaily",
             payToViewContact: "Zaplatiť za zobrazenie kontaktu",
+        },
+        offerPage: {
+            price: "Cena",
+            moreInfo: "Viac informácií",
+            location: "Lokalita",
+            field: "Odbor",
+            details: "Detaily",
+            contact: "Kontakt",
+        },
+        errorMessages: {
+            registrationError: "Chyba pri registrácii",
+            loginAfterRegistrationError: "Chyba pri prihlásení po registrácii",
+            registrationSuccessProfileSaved: "Registrácia a uloženie profilu úspešné!",
+            unexpectedError: "Došlo k neočakávanej chybe",
+            loginError: "Chyba pri prihlasovaní",
+            loginSuccess: "Prihlásenie úspešné!",
+            listingValidationFailed: "Ponuka/dopyt neprešla validáciou",
+            mustBeLoggedIn: "Musíte byť prihlásení",
+            listingSaveError: "Chyba pri ukladaní ponuky/dopytu",
+            listingSaved: "Ponuka uložená",
+            profileSaveAfterLoginError: "Chyba pri ukladaní profilu po prihlásení",
+            profileCreateError: "Chyba pri vytváraní profilu. Skúste to znova neskôr.",
+            profileSaveSuccess: "Profil úspešne uložený!",
+            passwordsDoNotMatch: "Heslá sa nezhodujú",
+            registrationGenericError: "Chyba pri registrácii",
+            registrationEmailConfirm: "Registrácia prebehla úspešne! Skontrolujte svoj e-mail pre potvrdenie.",
+        },
+        registerPage: {
+            title: "Registrovať sa",
+            firstName: "Meno",
+            lastName: "Priezvisko",
+            ico: "IČO",
+            email: "E-mail",
+            phoneNumber: "Telefónne číslo",
+            password: "Heslo",
+            passwordConfirmation: "Heslo znova",
         },
     },
 
@@ -507,6 +696,7 @@ const dict = {
             createOfferPH: "Create offer",
             createRequestPH: "Create request",
             emailPH: "john.smith@email.co.uk",
+            submitting: "Sending…",
         },
         createRequestForm: {
             title: "Offer name",
@@ -525,6 +715,7 @@ const dict = {
             pricePH: "30000 £, or negotiable",
             contactPersonPH: "John Smith",
             emailPH: "john.smith@email.co.uk",
+            submitting: "Sending…",
         },
         listings: {
             filter: "Filter",
@@ -535,11 +726,44 @@ const dict = {
             details: "Details",
             payToViewContact: "Pay to view contact",
         },
+        offerPage: {
+            price: "Price",
+            moreInfo: "More information",
+            location: "Location",
+            field: "Field",
+            details: "Details",
+            contact: "Contact",
+        },
+        errorMessages: {
+            registrationError: "Error during registration",
+            loginAfterRegistrationError: "Error logging in after registration",
+            registrationSuccessProfileSaved: "Registration and profile saved successfully!",
+            unexpectedError: "An unexpected error occurred",
+            loginError: "Login error",
+            loginSuccess: "Login successful!",
+            listingValidationFailed: "Offer/request failed validation",
+            mustBeLoggedIn: "You must be logged in",
+            listingSaveError: "Error saving offer/request",
+            listingSaved: "Offer saved",
+            profileSaveAfterLoginError: "Error saving profile after login",
+            profileCreateError: "Error creating profile. Please try again later.",
+            profileSaveSuccess: "Profile saved successfully!",
+            passwordsDoNotMatch: "Passwords do not match",
+            registrationGenericError: "Registration error",
+            registrationEmailConfirm: "Registration successful! Please check your email to confirm.",
+        },
+        registerPage: {
+            title: "Register",
+            firstName: "First name",
+            lastName: "Last name",
+            ico: "Company ID",
+            email: "E-mail",
+            phoneNumber: "Phone number",
+            password: "Password",
+            passwordConfirmation: "Repeat password",
+        },
     },
 } satisfies Record<LangCode, Dictionary>;
-
-
-
 
 
 export const getLang = (lang: LangCode): Dictionary => {

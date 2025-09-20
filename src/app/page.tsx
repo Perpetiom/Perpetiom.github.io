@@ -19,7 +19,7 @@ export default function Home() {
                     <CardLink
                         href="/offers"
                         title={t.homepage.viewOffer}
-                        description="Podívejte se na aktuální poptávky a nabídky."
+                        description={t.homepage.viewOffer}
                     />
                 </div>
                 <div className="vip">
@@ -27,7 +27,7 @@ export default function Home() {
                     <CardLink
                         href="/createOffer"
                         title={t.homepage.createOffer}
-                        description="Přidejte svou nabídku a dejte ostatním vědět."
+                        description={t.homepage.createOffer}
                     />
                 </div>
             </div>

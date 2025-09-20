@@ -7,6 +7,7 @@ import { handleFormChange } from "@/helpers/formHelpers";
 import { supabase } from '@/lib/supabase';
 import Modal from "@/components/Modal";
 import {useRouter} from "next/navigation";
+import {useI18n} from "@/i18n/I18nProvider";
 
 export default function RegisterPage() {
     const [registerData, setRegisterData] = useState({
@@ -21,7 +22,8 @@ export default function RegisterPage() {
 
     const [showModal, setShowModal] = useState(false);
     const [ modalMessage, setModalMessage] = useState('');
-    const router = useRouter(); // Hook pro přesměrování
+    const router = useRouter();
+    const { t } = useI18n();
 
     useEffect(() => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -43,14 +45,12 @@ export default function RegisterPage() {
                                 email: session.user.email, // email z session je spolehlivější
                             });
                         if (dbError) {
-                            console.error('Chyba při ukládání profilu po přihlášení:', dbError.message);
-                            setModalMessage('Chyba při vytváření profilu. Zkuste to prosím později.');
+                            setModalMessage(t.errorMessages.profileCreateError);
                             setShowModal(true);
                         } else {
-                            console.log('Profil úspěšně uložen!');
                             localStorage.removeItem('registerData'); // Vyčistíme data
                             // Přesměrovat uživatele na dashboard atd.
-                            router.push('/dashboard'); // Nebo jinam
+                            router.push('/'); // Nebo jinam
                         }
                     };
                     insertProfile();
@@ -67,9 +67,8 @@ export default function RegisterPage() {
         e.preventDefault();
 
         if (registerData.password !== registerData.passwordConfirmation) {
-            setModalMessage('Hesla se neshodují.');
+            setModalMessage(t.errorMessages.passwordsDoNotMatch);
             setShowModal(true);
-            return;
         }
 
         // Uložte data pro pozdější použití po potvrzení e-mailu
@@ -81,11 +80,11 @@ export default function RegisterPage() {
         });
 
         if (error) {
-            setModalMessage(`Chyba při registraci: ${error.message}`);
+            setModalMessage(t.errorMessages.registrationError + error.message);
             setShowModal(true);
         } else {
             // Zde už neukládáme profil, to se stane až po potvrzení e-mailu
-            setModalMessage('Registrace proběhla úspěšně! Zkontrolujte svůj e-mail pro potvrzení.');
+            setModalMessage(t.errorMessages.registrationEmailConfirm);
             setShowModal(true);
         }
     };
@@ -98,31 +97,31 @@ export default function RegisterPage() {
         <>
             <Navbar/>
             <div className="create-offer-container">
-                <h1>Registrovat se</h1>
+                <h1>{t.registerPage.title}</h1>
                 <form onSubmit={handleSubmit} className="create-offer-form">
                     <FormInput
-                        label="Jméno:"
+                        label={t.registerPage.firstName}
                         name="name"
                         placeholder="Jan"
                         value={registerData.name}
                         onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
-                        label="Příjmení:"
+                        label={t.registerPage.lastName}
                         name="surname"
                         placeholder="Novák"
                         value={registerData.surname}
                         onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
-                        label="IČO:"
+                        label={t.registerPage.ico}
                         name="ico"
                         placeholder="12345678"
                         value={registerData.ico}
                         onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
-                        label="E-mail:"
+                        label={t.registerPage.email}
                         name="email"
                         type="email"
                         placeholder="jan.novak@email.cz"
@@ -130,7 +129,7 @@ export default function RegisterPage() {
                         onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
-                        label="Telefon:"
+                        label={t.registerPage.phoneNumber}
                         name="phoneNumber"
                         type="tel"
                         placeholder="+420123456789"
@@ -138,7 +137,7 @@ export default function RegisterPage() {
                         onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
-                        label="Heslo:"
+                        label={t.registerPage.password}
                         name="password"
                         type="password"
                         placeholder="heslo"
@@ -146,14 +145,14 @@ export default function RegisterPage() {
                         onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
                     <FormInput
-                        label="Heslo znovu:"
+                        label={t.registerPage.passwordConfirmation}
                         name="passwordConfirmation"
                         type="password"
                         placeholder="heslo"
                         value={registerData.passwordConfirmation}
                         onChange={(e) => handleFormChange(e, setRegisterData)}
                     />
-                    <button type="submit">Zaregistrovat se</button>
+                    <button type="submit">{t.registerPage.title}</button>
                 </form>
             </div>
             {showModal && <Modal message={modalMessage} onClose={closeModal} />}
