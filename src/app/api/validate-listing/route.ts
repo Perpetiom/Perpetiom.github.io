@@ -1,9 +1,9 @@
 // app/api/validate-listing/route.ts
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 import { scrubObjectStrings } from "@/app/api/validate-listing/scrub";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+// Volitelně: nedovolí žádné pokusy o statiku
+export const dynamic = 'force-dynamic';
 
 async function withRetry<T>(fn: () => Promise<T>, tries = 3) {
     let lastErr: any;
@@ -12,9 +12,8 @@ async function withRetry<T>(fn: () => Promise<T>, tries = 3) {
             return await fn();
         } catch (e: any) {
             const status = e?.status ?? e?.response?.status;
-            const msg = e?.message ?? e?.response?.data ?? "";
             if (status !== 429) throw e;
-            await new Promise(r => setTimeout(r, 400 * (i + 1))); // 400ms, 800ms, 1200ms
+            await new Promise(r => setTimeout(r, 400 * (i + 1)));
             lastErr = e;
         }
     }
@@ -22,13 +21,27 @@ async function withRetry<T>(fn: () => Promise<T>, tries = 3) {
 }
 
 export async function POST(req: Request) {
+    // Lazy import + instanciace až uvnitř handleru
+    const { default: OpenAI } = await import("openai");
+    const apiKey = process.env.OPENAI_API_KEY;
+
+    // V CI / na GitHub Pages klíč nemáš → vrať kontrolovanou chybu
+    if (!apiKey) {
+        return NextResponse.json(
+            { ok: false, reason: "Server misconfigured: OPENAI_API_KEY missing" },
+            { status: 500 }
+        );
+    }
+
+    const openai = new OpenAI({ apiKey });
+
     try {
         const raw = await req.json();
 
         // 0) lokální PII scrub
         const { sanitized, found } = scrubObjectStrings(raw);
 
-        // 1) JEDNO volání – validace + překlady (bez separátní moderace)
+        // 1) validace + překlady v jednom požadavku
         const completion = await withRetry(() =>
             openai.chat.completions.create({
                 model: "gpt-4o-mini",
@@ -46,8 +59,6 @@ export async function POST(req: Request) {
                     },
                     { role: "user", content: JSON.stringify(sanitized) },
                 ],
-                // Pokud bys měl problém s json_schema na tvojí verzi SDK, přepni na:
-                // response_format: { type: "json_object" },
                 response_format: {
                     type: "json_schema",
                     json_schema: {
@@ -72,9 +83,9 @@ export async function POST(req: Request) {
                                         email: { type: ["string", "null"] },
                                         is_offer: { type: "boolean" },
                                         is_vip: { type: "boolean" },
-                                        date: { type: ["string", "null"] },
+                                        date: { type: ["string", "null"] }
                                     },
-                                    required: ["title","profession","description","location","price","is_offer","is_vip"],
+                                    required: ["title","profession","description","location","price","is_offer","is_vip"]
                                 },
                                 translations: {
                                     type: "object",
@@ -84,9 +95,9 @@ export async function POST(req: Request) {
                                         pl: { $ref: "#/$defs/baseFields" },
                                         de: { $ref: "#/$defs/baseFields" },
                                         sk: { $ref: "#/$defs/baseFields" },
-                                        en: { $ref: "#/$defs/baseFields" },
+                                        en: { $ref: "#/$defs/baseFields" }
                                     },
-                                    required: ["cs","pl","de","sk","en"],
+                                    required: ["cs","pl","de","sk","en"]
                                 },
                                 softIssues: {
                                     type: "array",
@@ -95,13 +106,13 @@ export async function POST(req: Request) {
                                         properties: {
                                             field: { type: "string" },
                                             message: { type: "string" },
-                                            suggestion: { type: "string" },
+                                            suggestion: { type: "string" }
                                         },
                                         required: ["field","message"],
-                                        additionalProperties: false,
-                                    },
+                                        additionalProperties: false
+                                    }
                                 },
-                                foundContactsInDescription: { type: "boolean" },
+                                foundContactsInDescription: { type: "boolean" }
                             },
                             required: ["allowed","reasons","normalized","translations","softIssues","foundContactsInDescription"],
                             $defs: {
@@ -112,15 +123,15 @@ export async function POST(req: Request) {
                                         title: { type: "string" },
                                         profession: { type: "string" },
                                         description: { type: "string" },
-                                        location: { type: "string" },
+                                        location: { type: "string" }
                                     },
-                                    required: ["title","description","location"],
-                                },
-                            },
-                        },
-                    },
+                                    required: ["title","description","location"]
+                                }
+                            }
+                        }
+                    }
                 },
-                temperature: 0.2,
+                temperature: 0.2
             })
         );
 
@@ -139,14 +150,13 @@ export async function POST(req: Request) {
         return NextResponse.json({
             ok: true,
             result: { ...parsed, normalized: hardNormalized },
-            found,
+            found
         });
     } catch (err: any) {
         const status = err?.status ?? err?.response?.status ?? 500;
         const msg = err?.message ?? String(err?.response?.data ?? err);
         const code = err?.code ?? err?.error?.type ?? "unknown";
         console.error("validate-listing error:", status, code, msg);
-
         return NextResponse.json(
             { ok: false, reason: "Validator error", code, error: msg },
             { status }
