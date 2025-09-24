@@ -2,8 +2,7 @@
 import { NextResponse } from "next/server";
 import { scrubObjectStrings } from "@/app/api/validate-listing/scrub";
 
-// Volitelně: nedovolí žádné pokusy o statiku
-export const dynamic = 'force-dynamic';
+
 
 async function withRetry<T>(fn: () => Promise<T>, tries = 3) {
     let lastErr: any;
